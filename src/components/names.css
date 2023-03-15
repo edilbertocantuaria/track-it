@@ -1,0 +1,22 @@
+*{
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+
+}
+
+
+
+
+a {
+	text - decoration: none;
+	&:link, &:visited {
+		color: none;
+		text-decoration: none;
+		cursor: none;
+	}
+
+	&:link:active, &:visited:active {
+		color: none;
+	}
