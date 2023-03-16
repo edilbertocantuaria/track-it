@@ -16,16 +16,16 @@ export default function LoginPage() {
 
     const [enter, setEnter] = useState("Entrar")
 
-
     const navigate = useNavigate();
 
     function Login(event) {
         event.preventDefault();
 
         setDisableInputs(true);
-        
+
         setEnter("");
         setIsLoading(true);
+
 
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
             {
@@ -71,10 +71,13 @@ export default function LoginPage() {
                     data-test="password-input"
                     onChange={e => setPassword(e.target.value)} />
                 <>
+
                     <ButtonLogin
                         type="submit"
                         data-test="login-btn"
-                        disabled={disableInputs}>
+                        disabled={disableInputs}
+                        colorOpacity={isLoading ? "0.7" : "1"}
+                        >
                         {enter}
                         {isLoading && (
                             <ThreeDots
@@ -141,6 +144,7 @@ const ButtonLogin = styled.button`
     width: 303px;
     height: 45px;
     background: #52B6FF;
+    opacity: ${props => props.colorOpacity};
     border-radius: 5px;
     border: none;
 
