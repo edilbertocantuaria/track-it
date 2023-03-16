@@ -2,24 +2,43 @@ import styled from "styled-components";
 import logo from "../assets/logo.png"
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import axios from "axios"
 
 export default function LoginPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    function Login(event){
+    const navigate = useNavigate();
+
+    function Login(event) {
         event.preventDefault();
-        alert("Está dando certo a chamada do botão!")
+
+        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
+            {
+                email: email,
+                password: password
+            }
+
+        )
+
+        request.then(() => {
+            navigate("/hoje");  
+        })
+
+        request.catch(()=> {
+            alert("Os dados informados estão incorretos ou o usuário não está cadastrado!")
+        })
+
     }
 
     return (
         <MainDiv>
             <img src={logo} alt="logo Track It" />
             <form onSubmit={Login}>
-            <input type="email" value ={email} placeholder="email" required data-test="email-input" onChange={e => setEmail(e.target.value)}/>
-            <input type="password" value ={password} placeholder="senha" required data-test="password-input" onChange={e => setPassword(e.target.value)}/>
-            <ButtonLogin type="submit" data-test="login-btn">Entrar</ButtonLogin>
+                <input type="email" value={email} placeholder="email" required data-test="email-input" onChange={e => setEmail(e.target.value)} />
+                <input type="password" value={password} placeholder="senha" required data-test="password-input" onChange={e => setPassword(e.target.value)} />
+                <ButtonLogin type="submit" data-test="login-btn">Entrar</ButtonLogin>
             </form>
             <Link to="/cadastro" data-test="signup-link"><SingUpMessage data-test="signup-link">Não tem uma conta? Cadastre-se!</SingUpMessage></Link>
         </MainDiv>

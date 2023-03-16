@@ -98,56 +98,6 @@ text-align: justify;
             font-size: 18px;
             color: #666666;
             margin-top: 17px;
-
-            //color: #8FC549 when habits progress > 0%;
-        }
-    }
-
-    .habitList{
-        display: flex;
-
-        align-items: center;
-        justify-content: space-between;
-        padding: 18px;
-
-        height: 100%;  // change to "auto"
-    
-        background: #FFFFFF;
-        border-radius: 5px;
-        margin-bottom: 29px;
-
-        font-size: 13px;
-        color: #666666;
-        margin-bottom: 16px;
-
-        .habitDescription{
-            display: flex;
-            flex-direction: column;
-                        
-            .habitName{
-                font-size: 20px;
-                color: #666666;
-            }
-
-            .habitSequence span{
-                color: #8FC549;
-            }
-
-            .habitRecord span{
-                color: #8FC549;
-            }
-
-            .habitName, .habitSequence{
-                margin-bottom: 8px;
-            }
-        }
-
-        .todayHabitCheck{
-            width: 69px;
-            height: 69px;
-
-            border: 1px solid #E7E7E7;
-            border-radius: 5px;
         }
     }
 

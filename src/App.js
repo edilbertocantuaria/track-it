@@ -11,13 +11,17 @@ export default function App() {
 
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HistoryPage/>}/>
-        {/* <Route path="/" element={<LoginPage />}/>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/hoje" element={<TodayPage/>}/>
         <Route path="/cadastro" element={< SingupPage />}/> 
+        
+        {/* <Route path="/" element={<LoginPage />}/>
+        
         <Route path="/habitos" element={<HabitsPage/>}/>
-        <Route path="/hoje" element={<TodayPage/>}/> */}
+         
+        <Route path="/historico" element={<HistoryPage/>}/>*/}
 
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }

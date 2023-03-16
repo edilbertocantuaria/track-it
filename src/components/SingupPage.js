@@ -2,29 +2,60 @@ import styled from "styled-components";
 import logo from "../assets/logo.png"
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import axios from "axios"
 
-export default function LoginPage() {
+export default function SingupPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [userImage, setUserImage] = useState("");
 
+    const navigate = useNavigate();
 
-    function Login(event){
+    function register(event) {
         event.preventDefault();
-        alert("Está dando certo a chamada do botão!")
+        console.log(
+            {
+                email: email,
+                name: username,
+                image: userImage,
+                password: password
+            }
+
+        )
+
+
+        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
+            {
+                email: email,
+                name: username,
+                image: userImage,
+                password: password
+            }
+            );
+
+            request.then(response => {
+                // alert("Usuário criado! Aproveite a plataforma do TrackIt 😉");
+                navigate("/"); 
+            })
+    
+            request.catch(error=> {
+                alert("Os dados informados estão incorretos")
+                console.log(error.data)
+            })
+
     }
 
     return (
         <MainDiv>
             <img src={logo} alt="logo Track It" />
-            <form onSubmit={Login}>
-            <input type="email" value ={email} placeholder="email" required data-test="email-input" onChange={e => setEmail(e.target.value)}/>
-            <input type="password" value ={password} placeholder="senha" required data-test="password-input" onChange={e => setPassword(e.target.value)}/>
-            <input type="name" value ={username} placeholder="nome" required data-test="user-name-input" onChange={e => setUsername(e.target.value)}/>
-            <input type="url" value ={userImage} placeholder="foto" required data-test="user-image-input" onChange={e => setUserImage(e.target.value)}/>
-            <SingUpButton type="submit" data-test="login-btn">Cadastrar</SingUpButton>
+            <form onSubmit={register}>
+                <input type="email" value={email} placeholder="email" data-test="email-input" onChange={e => setEmail(e.target.value)} />
+                <input type="password" value={password} placeholder="senha" data-test="password-input" onChange={e => setPassword(e.target.value.trim())} />
+                <input type="name" value={username} placeholder="nome"  data-test="user-name-input" onChange={e => setUsername(e.target.value)} />
+                <input type="url" value={userImage} placeholder="foto" data-test="user-image-input" onChange={e => setUserImage(e.target.value)} />
+              <SingUpButton type="submit" data-test="login-btn">Cadastrar</SingUpButton>
             </form>
             <Link to="/" data-test="login-link"><SingUpMessage data-test="signup-link">Já tem uma conta? Faça login!</SingUpMessage></Link>
         </MainDiv>
