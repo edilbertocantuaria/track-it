@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+
 import addHabitsButton from "../assets/addHabitsButton.png"
 import userImage from "../assets/lisa.jpg"
+import trashIcon from "../assets/trashIcon.png"
 
 import weekdays from "../weekdays";
 
@@ -10,7 +12,6 @@ export default function HabitsPage() {
 
     const [habit, setHabit] = useState("");
     const [password, setPassword] = useState("");
-
 
     return (
         <MainDiv>
@@ -35,6 +36,20 @@ export default function HabitsPage() {
                     <div className="saveOrCancel">
                         <button className="cancelButton" data-test="habit-create-cancel-btn">Cancelar</button>
                         <button className="saveButton" data-test="habit-create-save-btn">Salvar</button>
+                    </div>
+                </div>
+                <div className="habitList">
+                    <div className="listingHabit">
+                        <div className="habitWrapper">
+                            <img src={trashIcon} className="trashHabit" alt="excluir hábito" />
+                        </div>
+                        <div className="habitDescription">Algum hábito escrito aqui</div>
+                        <div className="weekdays">
+                            {weekdays.map((day, i) =>
+                                <button className="day" key={i} data-test="habit-day">
+                                    {day}
+                                </button>)}
+                        </div>
                     </div>
 
                 </div>
@@ -122,6 +137,39 @@ text-align: justify;
         background: #FFFFFF;
         border-radius: 5px;
         margin-bottom: 29px;
+    }
+    .listingHabit{
+        padding: 18px;
+    }
+
+    .habitList{
+        display: flex;
+        flex-direction: column;
+        // align-items: center;
+        justify-content: center;
+
+        height: 91px;
+        background: #FFFFFF;
+        border-radius: 5px;
+        margin-bottom: 29px;
+
+
+            .habitDescription{
+                margin-bottom: 10px;
+            }
+
+            .habitWrapper {
+                position: relative;
+            }
+
+            .trashHabit{
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                color: red;
+
+            }
+
     }
 
     input{
