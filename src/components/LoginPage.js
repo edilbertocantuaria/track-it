@@ -3,16 +3,29 @@ import logo from "../assets/logo.png"
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios"
+import { ThreeDots } from "react-loader-spinner";
+
 
 export default function LoginPage() {
 
+    const [disableInputs, setDisableInputs] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const [enter, setEnter] = useState("Entrar")
+
 
     const navigate = useNavigate();
 
     function Login(event) {
         event.preventDefault();
+
+        setDisableInputs(true);
+        
+        setEnter("");
+        setIsLoading(true);
 
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
             {
@@ -23,11 +36,15 @@ export default function LoginPage() {
         )
 
         request.then(() => {
-            navigate("/hoje");  
+            navigate("/hoje");
         })
 
-        request.catch(()=> {
+        request.catch(() => {
             alert("Os dados informados estão incorretos ou o usuário não está cadastrado!")
+            setDisableInputs(false);
+            setIsLoading(false);
+            setEnter("Entrar");
+
         })
 
     }
@@ -36,9 +53,39 @@ export default function LoginPage() {
         <MainDiv>
             <img src={logo} alt="logo Track It" />
             <form onSubmit={Login}>
-                <input type="email" value={email} placeholder="email" required data-test="email-input" onChange={e => setEmail(e.target.value)} />
-                <input type="password" value={password} placeholder="senha" required data-test="password-input" onChange={e => setPassword(e.target.value)} />
-                <ButtonLogin type="submit" data-test="login-btn">Entrar</ButtonLogin>
+                <input
+                    type="email"
+                    disabled={disableInputs}
+                    value={email}
+                    placeholder="email"
+                    required
+                    data-test="email-input"
+                    onChange={e => setEmail(e.target.value)} />
+
+                <input
+                    type="password"
+                    disabled={disableInputs}
+                    value={password}
+                    placeholder="senha"
+                    required
+                    data-test="password-input"
+                    onChange={e => setPassword(e.target.value)} />
+                <>
+                    <ButtonLogin
+                        type="submit"
+                        data-test="login-btn"
+                        disabled={disableInputs}>
+                        {enter}
+                        {isLoading && (
+                            <ThreeDots
+                                color="#FFFFFF"
+                                height="13px"
+                                width="51px"
+                                visible={isLoading} />
+                        )}
+                    </ButtonLogin>
+
+                </>
             </form>
             <Link to="/cadastro" data-test="signup-link"><SingUpMessage data-test="signup-link">Não tem uma conta? Cadastre-se!</SingUpMessage></Link>
         </MainDiv>
