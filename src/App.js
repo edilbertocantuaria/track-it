@@ -3,6 +3,7 @@ import LoginPage from "./components/LoginPage"
 import SingupPage from "./components/SingupPage"
 import HabitsPage from "./components/HabitsPage"
 import TodayPage from "./components/TodayPage";
+import HistoryPage from "./components/HistoryPage"
 
 
 export default function App() {
@@ -10,10 +11,11 @@ export default function App() {
 
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<TodayPage/>}/>
+        <Route path="/" element={<HistoryPage/>}/>
         {/* <Route path="/" element={<LoginPage />}/>
         <Route path="/cadastro" element={< SingupPage />}/> 
-        <Route path="/habitos" element={<HabitsPage/>}/>*/}
+        <Route path="/habitos" element={<HabitsPage/>}/>
+        <Route path="/hoje" element={<TodayPage/>}/> */}
 
       </Routes>
     </BrowserRouter>

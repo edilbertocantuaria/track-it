@@ -5,7 +5,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import userImage from "../assets/lisa.jpg"
 import checkedHabit from "../assets/checkedHabit.png"
 
-export default function TodayPage() {
+export default function HistoryPage() {
 
     const [habit, setHabit] = useState("");
     const [password, setPassword] = useState("");
@@ -18,26 +18,10 @@ export default function TodayPage() {
             </Header>
 
             <Main>
-                <div className="date">
-                    <div data-test="today">Algum dia da semana aqui, DD/MM</div>
-                    <div className="progress" data-test="today-counter">Nenhum hábito concluído ainda</div>
+                <div className="history">
+                    <div>Histórico</div>
+                    <div className="historyParagraph">Em breve você poderá ver o histórico dos seus hábitos aqui!</div>
                 </div>
-                <div className="habitList">
-                    <div className="habitDescription">
-                        <div className="habitName" data-test="today-habit-name">Ler 1 capítulo de livro</div>
-                        <div className="habitSequence" data-test="today-habit-sequence">Sequência atual: <span>3 dias</span></div>
-                        <div className="habitRecord" data-test="today-habit-record" >Seu recorde: <span>5 dias</span></div>
-
-
-                    </div>
-                    <div className="todayHabitCheck" data-test="today-habit-check-btn">
-                        <img src={checkedHabit} alt="status do hábito"/>
-
-                    </div>
-
-
-                </div>
-
             </Main>
 
             <Menu data-test="menu">
@@ -100,7 +84,7 @@ color: #666666;
 text-align: justify;
 
 
-    .date{
+    .history{
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -110,10 +94,10 @@ text-align: justify;
         font-size: 23px;
         color: #126BA5;
 
-        .progress{
+        .historyParagraph{
             font-size: 18px;
-            color: #BABABA;
-            margin-top: 5px;
+            color: #666666;
+            margin-top: 17px;
 
             //color: #8FC549 when habits progress > 0%;
         }
