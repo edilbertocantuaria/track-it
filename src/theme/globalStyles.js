@@ -56,10 +56,6 @@ table {
 		text-decoration: none;
 		cursor: none;
 	}
-
-	&:link:active, &:visited:active {
-		color: none;
-	}
 `
 
 

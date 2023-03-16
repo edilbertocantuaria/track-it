@@ -89,7 +89,8 @@ export default function SingupPage() {
                 <SingUpButton
                     type="submit"
                     disabled={disableInputs}
-                    data-test="login-btn">
+                    data-test="login-btn"
+                    colorOpacity={isLoading ? "0.7" : "1"}>
                         {registering}
                         {isLoading && (
                             <ThreeDots
@@ -155,6 +156,7 @@ const SingUpButton = styled.button`
     width: 303px;
     height: 45px;
     background: #52B6FF;
+    opacity:${props => props.colorOpacity};
     border-radius: 5px;
     border: none;
 

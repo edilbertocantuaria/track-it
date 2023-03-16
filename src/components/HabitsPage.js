@@ -58,9 +58,9 @@ export default function HabitsPage() {
             </Main>
 
             <Menu data-test="menu">
-                <div data-test="habit-link" >Hábitos</div>
-                <ProgressBar data-test="today-link">Hoje</ProgressBar>
-                <div data-test="history-link">Histórico</div>
+                <div data-test="habit-link" ><Link to="/habitos">Hábitos</Link></div>
+                <ProgressBar data-test="today-link"> <Link to="/hoje">Hoje</Link></ProgressBar>
+                <div data-test="history-link"><Link to="/historico">Histórico</Link></div>
             </Menu>
         </MainDiv>
 
@@ -249,7 +249,6 @@ text-align: justify;
 
 
 `
-
 const Menu = styled.div`
 display: flex;
 align-items: center;
@@ -268,6 +267,15 @@ font-style: normal;
 font-weight: 400;
 font-size: 18px;
 color: #52B6FF;
+
+    a {
+        color:#52B6FF;
+	    text - decoration: none;
+	    &:link, &:visited {
+		    color:#52B6FF;
+		    text-decoration: none;
+		    cursor: none;
+	}
 `
 const ProgressBar = styled.div`
 display: flex;
@@ -287,4 +295,12 @@ border-radius: 98.5px;
 color:#FFFFFF;
 text-align: center;
 
+    a {
+        color:#FFFFFF;
+	    text - decoration: none;
+	    &:link, &:visited {
+		    color:#FFFFFF;
+		    text-decoration: none;
+		    cursor: none;
+	}
 `
