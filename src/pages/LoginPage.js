@@ -1,68 +1,59 @@
-import React from "react";
 import styled from "styled-components";
 import logo from "../assets/logo.png"
 
 import useAppContext from '../hook/useAppContext'
 
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import axios from "axios"
 
+import axios from "axios"
 import { ThreeDots } from "react-loader-spinner";
 
-export default function SingupPage() {
+
+export default function LoginPage() {
+
     const [disableInputs, setDisableInputs] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    // const [username, setUsername] = useState("");
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [enter, setEnter] = useState("Entrar")
 
-    // const [userImage, setUserImage] = useState("");
-
-    const [registering, setRegistering] = useState("Cadastrar")
-
-    const { userImage, setUserImage} = useAppContext();
-    const { username, setUsername } = useAppContext();
-
+    const {setUsername, setUserImage } = useAppContext()
 
     const navigate = useNavigate();
 
-    function register(event) {
+    function Login(event) {
         event.preventDefault();
+
         setDisableInputs(true);
 
-        setRegistering("");
+        setEnter("");
         setIsLoading(true);
 
-        console.log({
-            email: email,
-            name: username,
-            image: userImage,
-            password: password
-        })
 
-
-
-        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
+        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
             {
                 email: email,
-                name: username,
-                image: userImage,
                 password: password
             }
-        );
 
-        request.then(() => {
-            // alert("Usuário criado! Aproveite a plataforma do TrackIt 😉");
-            navigate("/");
+        )
+
+        request.then(response => {
+            setUsername(response.data.name);
+            setUserImage(response.data.image);
+
+            navigate("/hoje");
         })
 
-        request.catch(error => {
-            alert("Os dados informados estão incorretos")
+        request.catch(() => {
+            alert("Os dados informados estão incorretos ou o usuário não está cadastrado!")
             setDisableInputs(false);
             setIsLoading(false);
-            setRegistering("Cadastrar");
+            setEnter("Entrar");
+
         })
 
     }
@@ -70,12 +61,13 @@ export default function SingupPage() {
     return (
         <MainDiv>
             <img src={logo} alt="logo Track It" />
-            <form onSubmit={register}>
+            <form onSubmit={Login}>
                 <input
                     type="email"
                     disabled={disableInputs}
                     value={email}
                     placeholder="email"
+                    required
                     data-test="email-input"
                     onChange={e => setEmail(e.target.value)} />
 
@@ -84,42 +76,30 @@ export default function SingupPage() {
                     disabled={disableInputs}
                     value={password}
                     placeholder="senha"
+                    required
                     data-test="password-input"
-                    onChange={e => setPassword(e.target.value.trim())} />
+                    onChange={e => setPassword(e.target.value)} />
+                <>
 
-                <input
-                    type="name"
-                    disabled={disableInputs}
-                    value={username}
-                    placeholder="nome"
-                    data-test="user-name-input"
-                    onChange={e => setUsername(e.target.value)} />
+                    <ButtonLogin
+                        type="submit"
+                        data-test="login-btn"
+                        disabled={disableInputs}
+                        colorOpacity={isLoading ? "0.7" : "1"}
+                        >
+                        {enter}
+                        {isLoading && (
+                            <ThreeDots
+                                color="#FFFFFF"
+                                height="13px"
+                                width="51px"
+                                visible={isLoading} />
+                        )}
+                    </ButtonLogin>
 
-                <input
-                    type="url"
-                    disabled={disableInputs}
-                    value={userImage}
-                    placeholder="foto"
-                    data-test="user-image-input"
-                    onChange={e => setUserImage(e.target.value)} />
-
-                <SingUpButton
-                    type="submit"
-                    disabled={disableInputs}
-                    data-test="login-btn"
-                    colorOpacity={isLoading ? "0.7" : "1"}>
-                    {registering}
-                    {isLoading && (
-                        <ThreeDots
-                            color="#FFFFFF"
-                            height="13px"
-                            width="51px"
-                            visible={isLoading} />
-                    )}
-
-                </SingUpButton>
+                </>
             </form>
-            <Link to="/" data-test="login-link"><SingUpMessage data-test="signup-link">Já tem uma conta? Faça login!</SingUpMessage></Link>
+            <Link to="/cadastro" data-test="signup-link"><SingUpMessage data-test="signup-link">Não tem uma conta? Cadastre-se!</SingUpMessage></Link>
         </MainDiv>
 
     )
@@ -164,7 +144,7 @@ font-size: 19.976px;
 
     }
 `
-const SingUpButton = styled.button`
+const ButtonLogin = styled.button`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -173,7 +153,7 @@ const SingUpButton = styled.button`
     width: 303px;
     height: 45px;
     background: #52B6FF;
-    opacity:${props => props.colorOpacity};
+    opacity: ${props => props.colorOpacity};
     border-radius: 5px;
     border: none;
 

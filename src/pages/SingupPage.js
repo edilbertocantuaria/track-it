@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import logo from "../assets/logo.png"
 
@@ -5,55 +6,63 @@ import useAppContext from '../hook/useAppContext'
 
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-
 import axios from "axios"
+
 import { ThreeDots } from "react-loader-spinner";
 
-
-export default function LoginPage() {
-
+export default function SingupPage() {
     const [disableInputs, setDisableInputs] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
+    // const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [enter, setEnter] = useState("Entrar")
 
-    const { username, setUsername, setUserImage } = useAppContext()
+    // const [userImage, setUserImage] = useState("");
+
+    const [registering, setRegistering] = useState("Cadastrar")
+
+    const { userImage, setUserImage} = useAppContext();
+    const { username, setUsername } = useAppContext();
+
 
     const navigate = useNavigate();
 
-    function Login(event) {
+    function register(event) {
         event.preventDefault();
-
         setDisableInputs(true);
 
-        setEnter("");
+        setRegistering("");
         setIsLoading(true);
 
-
-        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
-            {
-                email: email,
-                password: password
-            }
-
-        )
-
-        request.then(response => {
-            setUsername(response.data.name);
-            setUserImage(response.data.image);
-
-            navigate("/hoje");
+        console.log({
+            email: email,
+            name: username,
+            image: userImage,
+            password: password
         })
 
-        request.catch(() => {
-            alert("Os dados informados estão incorretos ou o usuário não está cadastrado!")
+
+
+        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
+            {
+                email: email,
+                name: username,
+                image: userImage,
+                password: password
+            }
+        );
+
+        request.then(() => {
+            // alert("Usuário criado! Aproveite a plataforma do TrackIt 😉");
+            navigate("/");
+        })
+
+        request.catch(error => {
+            alert("Os dados informados estão incorretos")
             setDisableInputs(false);
             setIsLoading(false);
-            setEnter("Entrar");
-
+            setRegistering("Cadastrar");
         })
 
     }
@@ -61,13 +70,12 @@ export default function LoginPage() {
     return (
         <MainDiv>
             <img src={logo} alt="logo Track It" />
-            <form onSubmit={Login}>
+            <form onSubmit={register}>
                 <input
                     type="email"
                     disabled={disableInputs}
                     value={email}
                     placeholder="email"
-                    required
                     data-test="email-input"
                     onChange={e => setEmail(e.target.value)} />
 
@@ -76,30 +84,42 @@ export default function LoginPage() {
                     disabled={disableInputs}
                     value={password}
                     placeholder="senha"
-                    required
                     data-test="password-input"
-                    onChange={e => setPassword(e.target.value)} />
-                <>
+                    onChange={e => setPassword(e.target.value.trim())} />
 
-                    <ButtonLogin
-                        type="submit"
-                        data-test="login-btn"
-                        disabled={disableInputs}
-                        colorOpacity={isLoading ? "0.7" : "1"}
-                        >
-                        {enter}
-                        {isLoading && (
-                            <ThreeDots
-                                color="#FFFFFF"
-                                height="13px"
-                                width="51px"
-                                visible={isLoading} />
-                        )}
-                    </ButtonLogin>
+                <input
+                    type="name"
+                    disabled={disableInputs}
+                    value={username}
+                    placeholder="nome"
+                    data-test="user-name-input"
+                    onChange={e => setUsername(e.target.value)} />
 
-                </>
+                <input
+                    type="url"
+                    disabled={disableInputs}
+                    value={userImage}
+                    placeholder="foto"
+                    data-test="user-image-input"
+                    onChange={e => setUserImage(e.target.value)} />
+
+                <SingUpButton
+                    type="submit"
+                    disabled={disableInputs}
+                    data-test="login-btn"
+                    colorOpacity={isLoading ? "0.7" : "1"}>
+                    {registering}
+                    {isLoading && (
+                        <ThreeDots
+                            color="#FFFFFF"
+                            height="13px"
+                            width="51px"
+                            visible={isLoading} />
+                    )}
+
+                </SingUpButton>
             </form>
-            <Link to="/cadastro" data-test="signup-link"><SingUpMessage data-test="signup-link">Não tem uma conta? Cadastre-se!</SingUpMessage></Link>
+            <Link to="/" data-test="login-link"><SingUpMessage data-test="signup-link">Já tem uma conta? Faça login!</SingUpMessage></Link>
         </MainDiv>
 
     )
@@ -144,7 +164,7 @@ font-size: 19.976px;
 
     }
 `
-const ButtonLogin = styled.button`
+const SingUpButton = styled.button`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -153,7 +173,7 @@ const ButtonLogin = styled.button`
     width: 303px;
     height: 45px;
     background: #52B6FF;
-    opacity: ${props => props.colorOpacity};
+    opacity:${props => props.colorOpacity};
     border-radius: 5px;
     border: none;
 
