@@ -5,6 +5,8 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import userImage from "../assets/lisa.jpg"
 import checkedHabit from "../assets/checkedHabit.png"
 
+import ProgressBar from "../helpers/ProgressBar"
+
 export default function TodayPage() {
 
     const [habit, setHabit] = useState("");
@@ -42,7 +44,7 @@ export default function TodayPage() {
 
             <Menu data-test="menu">
                 <div data-test="habit-link" ><Link to="/habitos">Hábitos</Link></div>
-                <ProgressBar data-test="today-link"> <Link to="/hoje">Hoje</Link></ProgressBar>
+                <ProgressBarStyled data-test="today-link"><ProgressBar/><Link to="/hoje"></Link></ProgressBarStyled>
                 <div data-test="history-link"><Link to="/historico">Histórico</Link></div>
             </Menu>
         </MainDiv>
@@ -199,7 +201,7 @@ color: #52B6FF;
 		    cursor: none;
 	}
 `
-const ProgressBar = styled.div`
+const ProgressBarStyled = styled.div`
 display: flex;
 align-items: center;
 justify-content: center;
@@ -207,15 +209,10 @@ justify-content: center;
 position: absolute;
 z-index:1;
 left: calc(50% - 45.5px);
-margin-bottom: 45.5px;
+margin-bottom: 70.5px;
 
-background-color: #52B6FF;
 width: 91px;
 height: 91px;
-border-radius: 98.5px;
-
-color:#FFFFFF;
-text-align: center;
 
     a {
         color:#FFFFFF;
