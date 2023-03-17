@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState} from "react";
+import { useState, useContext, React } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import addHabitsButton from "../assets/addHabitsButton.png"
@@ -9,24 +9,28 @@ import trashIcon from "../assets/trashIcon.png"
 import weekdays from "../helpers/weekdays";
 import ProgressBar from "../helpers/ProgressBar"
 
+
+
 export default function HabitsPage() {
-
-   
-
     const [habit, setHabit] = useState("");
-    const [password, setPassword] = useState("");
+
+    const Context = React.createContext();
+    const dataUser = useContext(Context);
+    console.log(Context);
+    console.log(dataUser);
+
 
     return (
         <MainDiv>
             <Header data-test="header">
                 <div>TrackIt</div>
-                <img src={userImage} alt="{userName}" />
+                {/* <img src={userImage} alt="{userName}" /> */}
             </Header>
 
             <Main>
                 <div className="title">
                     <div>Meus Hábitos</div>
-                    <img src={addHabitsButton} alt="adicionar hábitos" data-test="habit-create-btn" />
+                    <img src={dataUser.image} alt="adicionar hábitos" data-test="habit-create-btn" />
                 </div>
                 <div className="addHabit" data-test="habit-create-container">
                     <input type="text" value={habit} placeholder="nome do hábito" required data-test="habit-name-input" onChange={e => setHabit(e.target.value)} />
@@ -62,7 +66,7 @@ export default function HabitsPage() {
 
             <Menu data-test="menu">
                 <div data-test="habit-link" ><Link to="/habitos">Hábitos</Link></div>
-                <ProgressBarStyled data-test="today-link"><ProgressBar/><Link to="/hoje"></Link></ProgressBarStyled>
+                <ProgressBarStyled data-test="today-link"><ProgressBar /><Link to="/hoje"></Link></ProgressBarStyled>
                 <div data-test="history-link"><Link to="/historico">Histórico</Link></div>
             </Menu>
         </MainDiv>

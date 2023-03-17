@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import logo from "../assets/logo.png"
+
+import useAppContext from '../hook/useAppContext'
+
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+
 import axios from "axios"
 import { ThreeDots } from "react-loader-spinner";
 
@@ -15,6 +19,8 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
 
     const [enter, setEnter] = useState("Entrar")
+
+    const { username, setUsername, setUserImage } = useAppContext()
 
     const navigate = useNavigate();
 
@@ -35,7 +41,10 @@ export default function LoginPage() {
 
         )
 
-        request.then(() => {
+        request.then(response => {
+            setUsername(response.data.name);
+            setUserImage(response.data.image);
+
             navigate("/hoje");
         })
 

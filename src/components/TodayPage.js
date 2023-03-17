@@ -2,21 +2,21 @@ import styled from "styled-components";
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-import userImage from "../assets/lisa.jpg"
 import checkedHabit from "../assets/checkedHabit.png"
 
 import ProgressBar from "../helpers/ProgressBar"
+import useAppContext from '../hook/useAppContext'
 
 export default function TodayPage() {
 
     const [habit, setHabit] = useState("");
-    const [password, setPassword] = useState("");
 
+    const {userImage, username} = useAppContext(); 
     return (
         <MainDiv>
             <Header data-test="header">
                 <div>TrackIt</div>
-                <img src={userImage} alt="{userName}" />
+                <img src={userImage} alt={userName} />
             </Header>
 
             <Main>

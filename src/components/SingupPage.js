@@ -1,21 +1,30 @@
+import React from "react";
 import styled from "styled-components";
 import logo from "../assets/logo.png"
-import { useState } from "react";
+
+import useAppContext from '../hook/useAppContext'
+
+import { useState, useContext } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios"
-import { ThreeDots } from "react-loader-spinner";
 
+import { ThreeDots } from "react-loader-spinner";
 
 export default function SingupPage() {
     const [disableInputs, setDisableInputs] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
+    // const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
-    const [userImage, setUserImage] = useState("");
+
+
+    // const [userImage, setUserImage] = useState("");
 
     const [registering, setRegistering] = useState("Cadastrar")
+
+    const { userImage, setUserImage} = useAppContext();
+    const { username, setUsername } = useAppContext();
+
 
     const navigate = useNavigate();
 
@@ -25,6 +34,14 @@ export default function SingupPage() {
 
         setRegistering("");
         setIsLoading(true);
+
+        console.log({
+            email: email,
+            name: username,
+            image: userImage,
+            password: password
+        })
+
 
 
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
@@ -91,16 +108,16 @@ export default function SingupPage() {
                     disabled={disableInputs}
                     data-test="login-btn"
                     colorOpacity={isLoading ? "0.7" : "1"}>
-                        {registering}
-                        {isLoading && (
-                            <ThreeDots
-                                color="#FFFFFF"
-                                height="13px"
-                                width="51px"
-                                visible={isLoading} />
-                        )}
+                    {registering}
+                    {isLoading && (
+                        <ThreeDots
+                            color="#FFFFFF"
+                            height="13px"
+                            width="51px"
+                            visible={isLoading} />
+                    )}
 
-                    </SingUpButton>
+                </SingUpButton>
             </form>
             <Link to="/" data-test="login-link"><SingUpMessage data-test="signup-link">Já tem uma conta? Faça login!</SingUpMessage></Link>
         </MainDiv>
