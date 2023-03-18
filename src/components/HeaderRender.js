@@ -20,6 +20,7 @@ display: flex;
 align-items: center;
 justify-content: space-between;
 padding: 18px;
+z-index: 1;
 
 width: 100vw;
 height: 70px;

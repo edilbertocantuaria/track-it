@@ -41,9 +41,16 @@ export default function HabitsPage() {
         });
 
     },
-        [])
+        [list])
 
+    //CRUD => CREAT, READ, UPDATE, DELETE
     function listingHabits() {
+        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
+        request.then(response => {
+            setHabitsDescription(response.data);
+        });
+
+
         if (habitsDescription.length === 0) {
             return (
                 <div>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</div>
@@ -56,7 +63,7 @@ export default function HabitsPage() {
                             key={habit.id}>
                             <div className="listingHabit">
                                 <div className="habitWrapper">
-                                    <img src={trashIcon} className="trashHabit" title="excluir hábito" />
+                                    <img src={trashIcon} className="trashHabit" title="excluir hábito" onClick={() => deleteHabit({ habit })} />
                                 </div>
                                 <div className="habitDescription">{habit.name}</div>
                                 <div className="weekdays">
@@ -125,6 +132,8 @@ export default function HabitsPage() {
             setIsLoading(false);
             setHabit("");
             setDaysSelected([]);
+            setList(...list, body)
+
         })
 
         request.catch(response => {
@@ -137,6 +146,28 @@ export default function HabitsPage() {
         setHabit("");
         setDaysSelected([]);
         setShowCreateHabit("none");
+    }
+
+    function deleteHabit(habitID) {
+
+        console.log(habitID.habit.name);
+        const confirmed = window.confirm(`Deseja excluir o hábito "${habitID.habit.name}"` );
+        console.log(confirmed);
+
+        if (confirmed) {
+            const deleteHabit = habitID.habit;
+            const deleteHabitID = (habitID.habit.id)
+
+            const request = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${deleteHabitID}`, config)
+
+
+            request.then(response => {
+                console.log(response)
+                setList(...list, deleteHabit)
+            });
+        } else {
+            return
+        }
     }
 
     return (
@@ -216,22 +247,23 @@ export default function HabitsPage() {
     )
 }
 
-const MainDiv = styled.div`
+const MainDiv = styled.body`
 display: flex;
 flex-direction: column;
 align-items: center;
 
 width: 100vw;
-height: 100vh;
+height: 100vh; //tenho que alterar isso!
 background-color: #E5E5E5;
 
 font-family: 'Lexend Deca';
 font-style: normal;
 font-weight: 400;
 `
-const Main = styled.div`
+const Main = styled.main`
 position: absolute;
 width:91vw;
+height: auto;
 padding: 18px;
 margin-top: 98px;
 

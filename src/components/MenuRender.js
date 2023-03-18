@@ -22,6 +22,7 @@ display: flex;
 align-items: center;
 justify-content: space-between;
 padding: 18px;
+z-index:1;
 
 width: 100vw;
 height: 70px;
@@ -29,6 +30,7 @@ background-color: #FFFFFF;
 position: fixed;
 bottom: 0;
 left:0;
+
 
 font-family: "Lexend Deca";
 font-style: normal;
@@ -51,7 +53,7 @@ align-items: center;
 justify-content: center;
 
 position: absolute;
-z-index:1;
+z-index:2;
 left: calc(50% - 45.5px);
 margin-bottom: 70.5px;
 
