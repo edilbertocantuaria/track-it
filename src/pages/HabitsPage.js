@@ -38,16 +38,12 @@ export default function HabitsPage() {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
         request.then(response => {
             setHabitsDescription(response.data);
-            // console.log(habitsDescription.length)
-            // console.log(habitsDescription.id)
-            // console.log(habitsDescription.name)
-            // console.log(habitsDescription.days)
         });
 
     },
         [])
 
-    function creatingHabits() {
+    function listingHabits() {
         if (habitsDescription.length === 0) {
             return (
                 <div>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</div>
@@ -57,7 +53,7 @@ export default function HabitsPage() {
                 <>
                     {habitsDescription.map((habit) =>
                         <HabitList
-                        key={habit.id}>
+                            key={habit.id}>
                             <div className="listingHabit">
                                 <div className="habitWrapper">
                                     <img src={trashIcon} className="trashHabit" title="excluir hábito" />
@@ -135,10 +131,6 @@ export default function HabitsPage() {
             console.log(response);
             alert("Deu ruim!")
         })
-
-        // setDisableInputs(false);
-        // setIsLoading(false);
-        // setSave("Salvar");
     }
 
     function cancelRequest() {
@@ -175,6 +167,7 @@ export default function HabitsPage() {
                         {weekdays.map((day, i) =>
                             <DaysButton
                                 disabled={disableInputs}
+                                data-test="habit-day"
                                 onClick={() => selectingDay(i)}
                                 className="day"
                                 key={i}
@@ -212,7 +205,7 @@ export default function HabitsPage() {
 
                 </AddHabitForm>
 
-                {creatingHabits()}
+                {listingHabits()}
 
             </Main>
 
@@ -322,12 +315,13 @@ flex-direction: column;
 // align-items: center;
 justify-content: center;
 
-height: 91px;
+min-height: 91px;
 background: #FFFFFF;
 border-radius: 5px;
 margin-bottom: 29px;
     
     .habitDescription{
+        max-width:90%;
         margin-bottom: 10px;
     }
 
