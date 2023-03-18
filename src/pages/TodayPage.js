@@ -11,11 +11,11 @@ import Menu from "../components/MenuRender"
 import useAppContext from '../hook/useAppContext'
 
 export default function TodayPage() {
-    const [listHabit, setListHabit] = useState([])
+    // const [listHabit, setListHabit] = useState([])
 
 
-    const { token, 
-                numHabits, setNumHabits} = useAppContext();
+    const { token,
+                habitsDescription, setHabitsDescription } = useAppContext();
 
     const config = {
         headers: {
@@ -26,8 +26,8 @@ export default function TodayPage() {
     useEffect(() => {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
         request.then(response => {
-            setNumHabits(response.data.length);
-            setListHabit(response.data);
+            setHabitsDescription(response.data);
+            // setListHabit(response.data);
         });
 
     },
@@ -65,7 +65,7 @@ export default function TodayPage() {
                     <div className="progress" data-test="today-counter">Nenhum hábito concluído ainda</div>
                 </div>
 
-                {numHabits === 0 ? "" : habitsRender()}
+                {habitsDescription.length === 0 ? "" : habitsRender()}
 
             </Main>
 

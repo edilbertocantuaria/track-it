@@ -41,13 +41,14 @@ export default function LoginPage() {
                 email: email,
                 password: password
             }
-
         )
 
         request.then(response => {
             setUsername(response.data.name);
             setUserImage(response.data.image);
             setToken(response.data.token);
+            setIsLoading(false);
+            setDisableInputs(false);
 
             navigate("/hoje");
         })

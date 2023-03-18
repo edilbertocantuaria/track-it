@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, React } from "react";
+import { useState, useEffect, React } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import addHabitsButton from "../assets/addHabitsButton.png"
@@ -16,6 +16,7 @@ import { ThreeDots } from "react-loader-spinner";
 export default function HabitsPage() {
     const [habit, setHabit] = useState("");
 
+    const [list, setList] = useState([]);
     const [daysSelected, setDaysSelected] = useState([]);
 
     const [showCreateHabit, setShowCreateHabit] = useState("none");
@@ -23,32 +24,55 @@ export default function HabitsPage() {
 
     const { percentage, setPercentage,
         token,
-        numHabits, setNumHabits,
+        habitsDescription, setHabitsDescription,
         disableInputs, setDisableInputs,
         isLoading, setIsLoading } = useAppContext()
 
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    useEffect(() => {
+        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
+        request.then(response => {
+            setHabitsDescription(response.data);
+            // console.log(habitsDescription.length)
+            // console.log(habitsDescription.id)
+            // console.log(habitsDescription.name)
+            // console.log(habitsDescription.days)
+        });
+
+    },
+        [])
+
     function creatingHabits() {
-        if (numHabits === 0) {
+        if (habitsDescription.length === 0) {
             return (
                 <div>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</div>
             )
         } else {
             return (
-                <HabitList>
-                    <div className="listingHabit">
-                        <div className="habitWrapper">
-                            <img src={trashIcon} className="trashHabit" title="excluir hábito" />
-                        </div>
-                        <div className="habitDescription">Algum hábito escrito aqui</div>
-                        <div className="weekdays">
-                            {weekdays.map((day, i) =>
-                                <button className="day" key={i} data-test="habit-day">
-                                    {day}
-                                </button>)}
-                        </div>
-                    </div>
+                <>
+                    {habitsDescription.map((habit) =>
+                        <HabitList
+                        key={habit.id}>
+                            <div className="listingHabit">
+                                <div className="habitWrapper">
+                                    <img src={trashIcon} className="trashHabit" title="excluir hábito" />
+                                </div>
+                                <div className="habitDescription">{habit.name}</div>
+                                <div className="weekdays">
+                                    {weekdays.map((day, i) =>
+                                        <button className="day" key={i} data-test="habit-day">
+                                            {day}
+                                        </button>)}
+                                </div>
+                            </div>
+                        </HabitList>)}
 
-                </HabitList>
+                </>
             )
         }
 
@@ -59,10 +83,6 @@ export default function HabitsPage() {
     }
 
     function selectingDay(day) {
-        console.log(`TÁ CHAMANDO A FUNÇÃO! ${day}`)
-
-        // setSelectedDay(!selectedDay)
-
         if (daysSelected.includes(day)) {
             setDaysSelected(
                 daysSelected.filter(index => index !== day)
@@ -71,32 +91,54 @@ export default function HabitsPage() {
             const newDaySelected = [...daysSelected, day];
             setDaysSelected(newDaySelected)
         }
-
-        // console.log(selectedDay);
-        console.log(daysSelected);
     }
 
     function addHabitRequesting(event) {
         event.preventDefault();
-        console.log(daysSelected)
+        console.log(daysSelected);
+        const auxiliarHabit = habit.trim();
 
-        if(daysSelected.length==0){
+        if (daysSelected.length == 0) {
             alert("Selecione pelo menos um dia!")
             return
         }
 
+        if (auxiliarHabit.length === 0) {
+            alert("O campo hábito não pode ficar vazio!")
+            return
+        }
+
         setDisableInputs(true);
-
         setSave("");
-        setIsLoading(false);
+        setIsLoading(true);
 
-        alert("Função addHabitRequesting sendo chamada!");
+        const body = {
+            name: auxiliarHabit,
+            days: daysSelected
+        }
 
-        setHabit("");
-        setDaysSelected([]);
-        setDisableInputs(false);
-        setIsLoading(false);
-        setSave("Salvar");
+        console.log(body);
+
+        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", body, config)
+
+        request.then(response => {
+            console.log(response)
+            setShowCreateHabit("none");
+            setDisableInputs(false);
+            setSave("Salvar");
+            setIsLoading(false);
+            setHabit("");
+            setDaysSelected([]);
+        })
+
+        request.catch(response => {
+            console.log(response);
+            alert("Deu ruim!")
+        })
+
+        // setDisableInputs(false);
+        // setIsLoading(false);
+        // setSave("Salvar");
     }
 
     function cancelRequest() {
@@ -116,58 +158,59 @@ export default function HabitsPage() {
                 </div>
 
 
-                <AddHabitdiv
+                <AddHabitForm
                     data-test="habit-create-container"
                     visible={showCreateHabit}>
-                    
-                        <input
-                            type="text"
+
+                    <input
+                        type="text"
+                        disabled={disableInputs}
+                        value={habit}
+                        placeholder="nome do hábito"
+                        required
+                        data-test="habit-name-input"
+                        onChange={e => setHabit(e.target.value)} />
+
+                    <div className="weekdays">
+                        {weekdays.map((day, i) =>
+                            <DaysButton
+                                disabled={disableInputs}
+                                onClick={() => selectingDay(i)}
+                                className="day"
+                                key={i}
+                                colorFont={daysSelected.includes(i) ? "#FFFFFF" : "#DBDBDB"}
+                                backgroundColor={daysSelected.includes(i) ? "#CFCFCF" : "#FFFFFF"}
+                            >
+                                {day}
+                            </DaysButton>)}
+                    </div>
+
+                    <div className="saveOrCancel">
+                        <CancelButton
                             disabled={disableInputs}
-                            value={habit}
-                            placeholder="nome do hábito"
-                            required
-                            data-test="habit-name-input"
-                            onChange={e => setHabit(e.target.value)} />
+                            data-test="habit-create-cancel-btn"
+                            // onClick={() => setPercentage(percentage + 1)}
+                            onClick={() => cancelRequest()}>
+                            Cancelar
+                        </CancelButton>
 
-                        <div className="weekdays">
-                            {weekdays.map((day, i) =>
-                                <DaysButton
-                                    disabled={disableInputs}
-                                    onClick={() => selectingDay(i)}
-                                    className="day"
-                                    key={i}
-                                    colorFont={daysSelected.includes(i) ? "#FFFFFF" : "#DBDBDB"}
-                                    backgroundColor={daysSelected.includes(i) ? "#CFCFCF" : "#FFFFFF"}
-                                >
-                                    {day}
-                                </DaysButton>)}
-                        </div>
+                        <SaveButton
+                            type="submit"
+                            data-test="habit-create-save-btn"
+                            onClick={addHabitRequesting}
+                            colorOpacity={isLoading ? "0.7" : "1"}>
+                            {save}
+                            {isLoading && (
+                                <ThreeDots
+                                    color="#FFFFFF"
+                                    height="13px"
+                                    width="51px"
+                                    visible={isLoading} />
+                            )}
+                        </SaveButton>
+                    </div>
 
-                        <div className="saveOrCancel">
-                            <CancelButton
-                                data-test="habit-create-cancel-btn"
-                                // onClick={() => setPercentage(percentage + 1)}
-                                onClick={() => cancelRequest()}>
-                                Cancelar
-                            </CancelButton>
-
-                            <SaveButton
-                                type="submit"
-                                data-test="habit-create-save-btn"
-                                onClick={addHabitRequesting}
-                                colorOpacity={isLoading ? "0.7" : "1"}>
-                                {save}
-                                {isLoading && (
-                                    <ThreeDots
-                                        color="#FFFFFF"
-                                        height="13px"
-                                        width="51px"
-                                        visible={isLoading} />
-                                )}
-                            </SaveButton>
-                        </div>
-
-                </AddHabitdiv>
+                </AddHabitForm>
 
                 {creatingHabits()}
 
@@ -195,7 +238,7 @@ font-weight: 400;
 `
 const Main = styled.div`
 position: absolute;
-max-width:91vh;
+width:91vw;
 padding: 18px;
 margin-top: 98px;
 
@@ -243,7 +286,7 @@ text-align: justify;
     } 
 }
 `
-const AddHabitdiv = styled.form`
+const AddHabitForm = styled.form`
 display: ${props => props.visible};
 flex-direction: column;
 align-items: center;
@@ -274,38 +317,44 @@ margin-bottom: 29px;
 }
 `
 const HabitList = styled.div`
-    .listingHabit{
-    padding: 18px;
+display: flex;
+flex-direction: column;
+// align-items: center;
+justify-content: center;
+
+height: 91px;
+background: #FFFFFF;
+border-radius: 5px;
+margin-bottom: 29px;
+    
+    .habitDescription{
+        margin-bottom: 10px;
     }
 
-    .habitList{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+    .habitWrapper {
+        position: relative;
+    }
 
-        height: 91px;
+    .trashHabit{
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        color: red;
+    }
+
+    button{
+        width: 30px;
+        height: 30px;
         background: #FFFFFF;
+        border: 1px solid #D5D5D5;
         border-radius: 5px;
-        margin-bottom: 29px;
+        color: #DBDBDB;
+    }
 
-
-        .habitDescription{
-            margin-bottom: 10px;
-        }
-
-        .habitWrapper {
-            position: relative;
-        }
-
-        .trashHabit{
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            color: red;
-        }
-
-    } 
+    .listingHabit{
+        padding: 18px;
+    }
+} 
 `
 const DaysButton = styled.button`
 width: 30px;
@@ -329,10 +378,17 @@ border-radius: 5px;
     }
 `
 const SaveButton = styled.button`
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+
+color: #FFFFFF;
+text-align: center;
+
 background-color:  #52B6FF;
 opacity: ${props => props.colorOpacity};
 border: none;
-color: #FFFFFF;
 border-radius: 5px;
     &:hover{
         background: #3F8FD2;
