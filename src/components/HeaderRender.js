@@ -10,7 +10,7 @@ export default function HeaderRender() {
     return (
         <Header data-test="header">
              <Link to="/"><div>TrackIt</div></Link>
-            <Link to="/hoje"><img src={userImage} alt={username} /></Link>
+            <Link to="/hoje"><img src={userImage} title={username} /></Link>
         </Header>
     )
 }

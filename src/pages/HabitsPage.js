@@ -14,8 +14,8 @@ import useAppContext from '../hook/useAppContext'
 export default function HabitsPage() {
     const [habit, setHabit] = useState("");
 
-    // const { percentage, setPercentage } = useAppContext()
-    // onClick={() => setPercentage(percentage+1)
+    const { percentage, setPercentage } = useAppContext()
+
 
     return (
         <MainDiv>
@@ -35,7 +35,9 @@ export default function HabitsPage() {
                             </button>)}
                     </div>
                     <div className="saveOrCancel">
-                        <button className="cancelButton" data-test="habit-create-cancel-btn" >Cancelar</button>
+                        <button className="cancelButton" data-test="habit-create-cancel-btn" 
+                            onClick={() => setPercentage(percentage+1)}
+                                >Cancelar+1</button>
                         <button className="saveButton" data-test="habit-create-save-btn">Salvar</button>
                     </div>
                 </div>
