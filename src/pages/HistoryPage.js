@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-import userImage from "../assets/lisa.jpg"
-
 import Header from "../components/HeaderRender"
 import Menu from "../components//MenuRender"
 

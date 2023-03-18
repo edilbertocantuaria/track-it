@@ -1,6 +1,8 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+
+import axios from "axios"
 
 import checkedHabit from "../assets/checkedHabit.png"
 
@@ -9,10 +11,49 @@ import Menu from "../components/MenuRender"
 import useAppContext from '../hook/useAppContext'
 
 export default function TodayPage() {
+    const [listHabit, setListHabit] = useState([])
 
-    const [habit, setHabit] = useState("");
 
-    const {userImage} = useAppContext(); 
+    const { token, 
+                numHabits, setNumHabits} = useAppContext();
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    useEffect(() => {
+        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
+        request.then(response => {
+            setNumHabits(response.data.length);
+            setListHabit(response.data);
+        });
+
+    },
+        [])
+
+    function habitsRender() {
+        return (
+            <div className="habitList">
+
+                <div className="habitDescription">
+                    <div className="habitName" data-test="today-habit-name">Ler 1 capítulo de livro</div>
+                    <div className="habitSequence" data-test="today-habit-sequence">Sequência atual: <span>3 dias</span></div>
+                    <div className="habitRecord" data-test="today-habit-record" >Seu recorde: <span>5 dias</span></div>
+                </div>
+
+                <div className="todayHabitCheck" data-test="today-habit-check-btn">
+                    <img src={checkedHabit} alt="status do hábito" />
+                </div>
+
+            </div>
+
+        )
+    }
+
+
+
     return (
         <MainDiv>
 
@@ -20,28 +61,15 @@ export default function TodayPage() {
 
             <Main>
                 <div className="date">
-                    <div data-test="today">Algum dia da semana aqui, DD/MM</div>
+                    <div data-test="today">Segunda, 17/05</div>
                     <div className="progress" data-test="today-counter">Nenhum hábito concluído ainda</div>
                 </div>
-                <div className="habitList">
-                    <div className="habitDescription">
-                        <div className="habitName" data-test="today-habit-name">Ler 1 capítulo de livro</div>
-                        <div className="habitSequence" data-test="today-habit-sequence">Sequência atual: <span>3 dias</span></div>
-                        <div className="habitRecord" data-test="today-habit-record" >Seu recorde: <span>5 dias</span></div>
 
-
-                    </div>
-                    <div className="todayHabitCheck" data-test="today-habit-check-btn">
-                        <img src={checkedHabit} alt="status do hábito" />
-
-                    </div>
-
-
-                </div>
+                {numHabits === 0 ? "" : habitsRender()}
 
             </Main>
 
-            <Menu/>
+            <Menu />
 
         </MainDiv>
 

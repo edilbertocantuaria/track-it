@@ -1,15 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import useAppContext from '../hook/useAppContext'
 
 import ProgressBar from "../helpers/ProgressBar"
 
 export default function MenuRender() {
+
+	const {setIsLoading} = useAppContext();
+
+	function settingThings(){
+		console.log("é pra setar o estado do isLoading")
+		setIsLoading(true);
+	}
+
     return (
         <Menu data-test="menu">
-            <div data-test="habit-link" ><Link to="/habitos">Hábitos</Link></div>
+            <div data-test="habit-link" onClick={()=> settingThings}><Link to="/habitos">Hábitos</Link></div>
             <ProgressBarStyled data-test="today-link"><Link to="/hoje"><ProgressBar /></Link></ProgressBarStyled>
-            <div data-test="history-link"><Link to="/historico">Histórico</Link></div>
+            <div data-test="history-link"onClick={()=> settingThings}><Link to="/historico">Histórico</Link></div>
         </Menu>
     )
 }

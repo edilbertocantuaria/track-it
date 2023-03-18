@@ -12,15 +12,18 @@ import { ThreeDots } from "react-loader-spinner";
 
 export default function LoginPage() {
 
-    const [disableInputs, setDisableInputs] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const [enter, setEnter] = useState("Entrar")
 
-    const {setUsername, setUserImage } = useAppContext()
+    const { setUsername,
+                setUserImage,
+                setToken,
+                disableInputs, setDisableInputs,
+                isLoading, setIsLoading } = useAppContext()
 
     const navigate = useNavigate();
 
@@ -44,6 +47,7 @@ export default function LoginPage() {
         request.then(response => {
             setUsername(response.data.name);
             setUserImage(response.data.image);
+            setToken(response.data.token);
 
             navigate("/hoje");
         })
@@ -86,7 +90,7 @@ export default function LoginPage() {
                         data-test="login-btn"
                         disabled={disableInputs}
                         colorOpacity={isLoading ? "0.7" : "1"}
-                        >
+                    >
                         {enter}
                         {isLoading && (
                             <ThreeDots
@@ -166,7 +170,6 @@ const ButtonLogin = styled.button`
     &:hover {
         background: #3F8FD2;
 `
-
 const SingUpMessage = styled.div`
 font-family: 'Lexend Deca';
 font-style: normal;

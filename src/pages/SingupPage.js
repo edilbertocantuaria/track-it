@@ -13,18 +13,14 @@ import { ThreeDots } from "react-loader-spinner";
 export default function SingupPage() {
     const [disableInputs, setDisableInputs] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    // const [username, setUsername] = useState("");
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-
-    // const [userImage, setUserImage] = useState("");
-
-    const [registering, setRegistering] = useState("Cadastrar")
+   const [registering, setRegistering] = useState("Cadastrar")
 
     const { userImage, setUserImage} = useAppContext();
     const { username, setUsername } = useAppContext();
-
 
     const navigate = useNavigate();
 
