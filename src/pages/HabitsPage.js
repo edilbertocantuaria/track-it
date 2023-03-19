@@ -171,11 +171,6 @@ export default function HabitsPage() {
     }
 
     function deleteHabit(habitID) {
-
-        // console.log(habitID.habit.name);
-        // const confirmed = 
-        // console.log(confirmed);
-
         if (window.confirm(`Deseja excluir o hábito "${habitID.habit.name}"`)) {
             const deleteHabit = habitID.habit;
             const deleteHabitID = (habitID.habit.id)
@@ -201,8 +196,8 @@ export default function HabitsPage() {
                     <div>Meus Hábitos</div>
                     <img
                         src={addHabitsButton}
-                        alt="adicionar hábitos" 
-                        ata-test="habit-create-btn"
+                        alt="adicionar hábitos"
+                        data-test="habit-create-btn"
                         onClick={addHabit} />
                 </div>
 

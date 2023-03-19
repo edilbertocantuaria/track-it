@@ -30,23 +30,25 @@ const [listHabit, setListHabit] = useState([])
         });
 
     },
-        [listHabit])
+        [habitsDescription])
 
     useEffect(() => {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
         request.then(response => {
-            setHabitsDescription(response.data);
+            setListHabit(response.data);
+
         });
         request.catch(error => {
             console.log(error);
         })
-
-
     },
-        [listHabit])
+        [habitsDescription])
 
 
     function habitsRender() {
+        // console.log("looping?");
+        // console.log(listHabit);
+    
         return (
             <div className="habitList">
 
