@@ -38,7 +38,7 @@ export default function LoginPage() {
 
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
             {
-                email: email,
+                email: email.toLowerCase(),
                 password: password
             }
         )

@@ -51,29 +51,47 @@ export default function HabitsPage() {
         });
 
 
+
         if (habitsDescription.length === 0) {
             return (
                 <div>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</div>
             )
         } else {
+
+
             return (
                 <>
                     {habitsDescription.map((habit) =>
                         <HabitList
-                            key={habit.id}>
+                            key={habit.id}
+                            data-test="habit-container">
                             <div className="listingHabit">
                                 <div className="habitWrapper">
-                                    <img src={trashIcon} className="trashHabit" title="excluir hábito" onClick={() => deleteHabit({ habit })} />
+                                    <img
+                                        src={trashIcon}
+                                        className="trashHabit"
+                                        title="excluir hábito"
+                                        onClick={() => deleteHabit({ habit })}
+                                        data-test="habit-delete-btn" />
                                 </div>
-                                <div className="habitDescription">{habit.name}</div>
+                                <div className="habitDescription" data-test="habit-name">{habit.name}</div>
                                 <div className="weekdays">
                                     {weekdays.map((day, i) =>
-                                        <button className="day" key={i} data-test="habit-day">
+                                        <DaysButton
+                                            // disabled="true"
+                                            data-test="habit-day"
+                                            className="day"
+                                            key={i}
+                                            onClick={() => selectingDay(i)}
+                                            colorFont={daysSelected.includes(i) ? "#FFFFFF" : "#DBDBDB"}
+                                            backgroundColor={daysSelected.includes(i) ? "#CFCFCF" : "#FFFFFF"}
+                                        >
                                             {day}
-                                        </button>)}
+                                        </DaysButton>)}
                                 </div>
                             </div>
-                        </HabitList>)}
+                        </HabitList>)
+                    }
 
                 </>
             )
@@ -81,11 +99,8 @@ export default function HabitsPage() {
 
     }
 
-    function addHabit() {
-        setShowCreateHabit("flex");
-    }
-
     function selectingDay(day) {
+        console.log("função sendo chamada")
         if (daysSelected.includes(day)) {
             setDaysSelected(
                 daysSelected.filter(index => index !== day)
@@ -94,6 +109,10 @@ export default function HabitsPage() {
             const newDaySelected = [...daysSelected, day];
             setDaysSelected(newDaySelected)
         }
+    }
+
+    function addHabit() {
+        setShowCreateHabit("flex");
     }
 
     function addHabitRequesting(event) {
@@ -151,7 +170,7 @@ export default function HabitsPage() {
     function deleteHabit(habitID) {
 
         console.log(habitID.habit.name);
-        const confirmed = window.confirm(`Deseja excluir o hábito "${habitID.habit.name}"` );
+        const confirmed = window.confirm(`Deseja excluir o hábito "${habitID.habit.name}"`);
         console.log(confirmed);
 
         if (confirmed) {
@@ -177,7 +196,11 @@ export default function HabitsPage() {
             <Main>
                 <div className="title">
                     <div>Meus Hábitos</div>
-                    <img src={addHabitsButton} alt="adicionar hábitos" data-test="habit-create-btn" onClick={addHabit} />
+                    <img
+                        src={addHabitsButton}
+                        alt="adicionar hábitos" d
+                        ata-test="habit-create-btn"
+                        onClick={addHabit} />
                 </div>
 
 
@@ -197,6 +220,7 @@ export default function HabitsPage() {
                     <div className="weekdays">
                         {weekdays.map((day, i) =>
                             <DaysButton
+                                type="button"
                                 disabled={disableInputs}
                                 data-test="habit-day"
                                 onClick={() => selectingDay(i)}
