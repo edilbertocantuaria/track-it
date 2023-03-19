@@ -50,7 +50,6 @@ export default function LoginPage() {
             setToken(response.data.token);
             setIsLoading(false);
             setDisableInputs(false);
-            // loadingDatas();
             navigate("/hoje");
         })
 
@@ -65,18 +64,6 @@ export default function LoginPage() {
 
 
     }
-
-    // function loadingDatas() {
-    //     const config = {
-    //         headers: {
-    //             Authorization: `Bearer ${token}`
-    //         }
-    //     }
-    //     const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
-    //     request.then(response => {
-    //         setHabitsDescription(response.data);
-    //     });
-    // }
 
     return (
         <MainDiv>

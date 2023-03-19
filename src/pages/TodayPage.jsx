@@ -13,7 +13,6 @@ import useAppContext from '../hook/useAppContext'
 export default function TodayPage() {
 const [listHabit, setListHabit] = useState([])
 
-
     const { token,
                 habitsDescription, setHabitsDescription } = useAppContext();
 
@@ -28,7 +27,6 @@ const [listHabit, setListHabit] = useState([])
         request.then(response => {
             setHabitsDescription(response.data);
         });
-
     },
         [habitsDescription])
 
@@ -36,7 +34,6 @@ const [listHabit, setListHabit] = useState([])
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
         request.then(response => {
             setListHabit(response.data);
-
         });
         request.catch(error => {
             console.log(error);
@@ -46,9 +43,7 @@ const [listHabit, setListHabit] = useState([])
 
 
     function habitsRender() {
-        // console.log("looping?");
-        // console.log(listHabit);
-    
+
         return (
             <div className="habitList">
 
@@ -156,6 +151,7 @@ text-align: justify;
             flex-direction: column;
                         
             .habitName{
+                width: 80%;
                 font-size: 20px;
                 color: #666666;
             }
