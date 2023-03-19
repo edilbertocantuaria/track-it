@@ -15,6 +15,7 @@ import { ThreeDots } from "react-loader-spinner";
 
 export default function HabitsPage() {
     const [habit, setHabit] = useState("");
+    const [disableSomeInputs, setSomeDisableInputs] = useState(true);
 
     const [list, setList] = useState([]);
     const [daysSelected, setDaysSelected] = useState([]);
@@ -48,6 +49,9 @@ export default function HabitsPage() {
         request.then(response => {
             setHabitsDescription(response.data);
         });
+        request.catch(error => {
+            console.log(error);
+        })
 
 
 
@@ -77,7 +81,7 @@ export default function HabitsPage() {
                                 <div className="weekdays">
                                     {weekdays.map((day, i) =>
                                         <DaysButton
-                                            // disabled="true"
+                                            disabled={disableSomeInputs}
                                             data-test="habit-day"
                                             className="day"
                                             key={i}
@@ -154,8 +158,8 @@ export default function HabitsPage() {
 
         })
 
-        request.catch(response => {
-            console.log(response);
+        request.catch(error => {
+            console.log(error);
             alert("Deu ruim!")
         })
     }
@@ -168,11 +172,11 @@ export default function HabitsPage() {
 
     function deleteHabit(habitID) {
 
-        console.log(habitID.habit.name);
-        const confirmed = window.confirm(`Deseja excluir o hábito "${habitID.habit.name}"`);
-        console.log(confirmed);
+        // console.log(habitID.habit.name);
+        // const confirmed = 
+        // console.log(confirmed);
 
-        if (confirmed) {
+        if (window.confirm(`Deseja excluir o hábito "${habitID.habit.name}"`)) {
             const deleteHabit = habitID.habit;
             const deleteHabitID = (habitID.habit.id)
 
@@ -197,7 +201,7 @@ export default function HabitsPage() {
                     <div>Meus Hábitos</div>
                     <img
                         src={addHabitsButton}
-                        alt="adicionar hábitos" d
+                        alt="adicionar hábitos" 
                         ata-test="habit-create-btn"
                         onClick={addHabit} />
                 </div>
@@ -270,7 +274,7 @@ export default function HabitsPage() {
     )
 }
 
-const MainDiv = styled.body`
+const MainDiv = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;

@@ -11,7 +11,7 @@ import Menu from "../components/MenuRender"
 import useAppContext from '../hook/useAppContext'
 
 export default function TodayPage() {
-    // const [listHabit, setListHabit] = useState([])
+const [listHabit, setListHabit] = useState([])
 
 
     const { token,
@@ -24,14 +24,27 @@ export default function TodayPage() {
     }
 
     useEffect(() => {
-        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
+        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
         request.then(response => {
             setHabitsDescription(response.data);
-            // setListHabit(response.data);
         });
 
     },
-        [])
+        [listHabit])
+
+    useEffect(() => {
+        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
+        request.then(response => {
+            setHabitsDescription(response.data);
+        });
+        request.catch(error => {
+            console.log(error);
+        })
+
+
+    },
+        [listHabit])
+
 
     function habitsRender() {
         return (
