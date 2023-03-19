@@ -103,7 +103,6 @@ export default function HabitsPage() {
     }
 
     function selectingDay(day) {
-        console.log("função sendo chamada")
         if (daysSelected.includes(day)) {
             setDaysSelected(
                 daysSelected.filter(index => index !== day)
@@ -120,7 +119,6 @@ export default function HabitsPage() {
 
     function addHabitRequesting(event) {
         event.preventDefault();
-        console.log(daysSelected);
         const auxiliarHabit = habit.trim();
 
         if (daysSelected.length == 0) {

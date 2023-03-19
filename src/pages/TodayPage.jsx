@@ -21,7 +21,7 @@ const [listHabit, setListHabit] = useState([])
             Authorization: `Bearer ${token}`
         }
     }
-
+    
     useEffect(() => {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
         request.then(response => {
@@ -41,12 +41,15 @@ const [listHabit, setListHabit] = useState([])
     },
         [habitsDescription])
 
+    useEffect( () => {
+        console.log(habitsDescription) 
+        console.log(listHabit)}, [])
+
 
     function habitsRender() {
-
+        // console.log(listHabit)
         return (
             <div className="habitList">
-
                 <div className="habitDescription">
                     <div className="habitName" data-test="today-habit-name">Ler 1 capítulo de livro</div>
                     <div className="habitSequence" data-test="today-habit-sequence">Sequência atual: <span>3 dias</span></div>
