@@ -3,18 +3,25 @@ import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import axios from "axios"
+import dayjs from 'dayjs';
+import "dayjs/locale/pt-br";
 
 import checkedHabit from "../assets/checkedHabit.png"
+import notCheckedHabit from "../assets/notCheckedHabit.png"
 
 import Header from "../components/HeaderRender";
 import Menu from "../components/MenuRender"
 import useAppContext from '../hook/useAppContext'
 
 export default function TodayPage() {
-const [listHabit, setListHabit] = useState([])
 
-    const { token,
-                habitsDescription, setHabitsDescription } = useAppContext();
+    const [done, setDone] = useState(0)
+    const [todayDate, setTodayDate] = useState("")
+
+    const { percentage, setPercentage,
+        token,
+        habitsDescription, setHabitsDescription,
+        listHabit, setListHabit } = useAppContext();
 
     const config = {
         headers: {
@@ -27,45 +34,86 @@ const [listHabit, setListHabit] = useState([])
         request.then(response => {
             setHabitsDescription(response.data);
         });
+
+        const date = dayjs();
+        let aux_todayDate = date.locale('pt-br').format('dddd, DD/MM');
+        let auxDate1 = aux_todayDate[0].toUpperCase();
+        let auxDate2 = aux_todayDate.slice(1);
+        setTodayDate(auxDate1 + auxDate2)
     },
         [habitsDescription])
+
+    // useEffect(() => {
+    //     const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
+    //     request.then(response => {
+    //         setListHabit(response.data);
+    //     });
+    //     request.catch(error => {
+    //         console.log(error);
+    //     })
+    // },
+    //     [habitsDescription])
 
     useEffect(() => {
-        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
-        request.then(response => {
-            setListHabit(response.data);
-        });
-        request.catch(error => {
-            console.log(error);
-        })
-    },
-        [habitsDescription])
-
-    useEffect( () => {
-        console.log(habitsDescription) 
-        console.log(listHabit)}, [])
-
+        console.log(habitsDescription)
+        console.log(listHabit)
+    }, [])
 
     function habitsRender() {
-        // console.log(listHabit)
         return (
-            <div className="habitList">
-                <div className="habitDescription">
-                    <div className="habitName" data-test="today-habit-name">Ler 1 capítulo de livro</div>
-                    <div className="habitSequence" data-test="today-habit-sequence">Sequência atual: <span>3 dias</span></div>
-                    <div className="habitRecord" data-test="today-habit-record" >Seu recorde: <span>5 dias</span></div>
-                </div>
+            <>
+                {listHabit.map((habit) =>
+                    <div className="habitList"
+                        key={habit.id}>
+                        <div className="habitDescription">
+                            <div className="habitName" data-test="today-habit-name">{habit.name}</div>
+                            <div className="habitSequence" data-test="today-habit-sequence">Sequência atual: <span>{habit.currentSequence} dias</span></div>
+                            <div className="habitRecord" data-test="today-habit-record" >Seu recorde: <span>{habit.highestSequence} dias</span></div>
+                        </div>
 
-                <div className="todayHabitCheck" data-test="today-habit-check-btn">
-                    <img src={checkedHabit} alt="status do hábito" />
-                </div>
+                        <div className="todayHabitCheck" data-test="today-habit-check-btn">
+                            <img src={habit.done ? checkedHabit : notCheckedHabit} alt="status do hábito" onClick={() => habitDone(habit)} />
+                        </div>
 
-            </div>
-
+                    </div>
+                )}
+            </>
         )
     }
 
+    function habitDone(habit) {
+        console.log(habit);
+        console.log(habit.id);
 
+        if (habit.done) {
+            // const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, config)
+            // request.then(response => 
+            //     console.log(response)
+            //     )
+            // request.catch(error => 
+            //     console.log(error)
+            //     )
+            habit.done = !habit.done;
+            setPercentage(percentage - 1)
+        } else {
+            // const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, config)
+            // request.then(response => 
+            //     console.log(response)
+            //     )
+            // request.catch(error => 
+            //     console.log(error)
+            //     )
+
+            habit.done = !habit.done;
+            setPercentage(percentage + 1)
+
+        }
+
+
+
+
+
+    }
 
     return (
         <MainDiv>
@@ -74,7 +122,7 @@ const [listHabit, setListHabit] = useState([])
 
             <Main>
                 <div className="date">
-                    <div data-test="today">Segunda, 17/05</div>
+                    <div data-test="today">{todayDate}</div>
                     <div className="progress" data-test="today-counter">Nenhum hábito concluído ainda</div>
                 </div>
 

@@ -53,8 +53,6 @@ export default function HabitsPage() {
             console.log(error);
         })
 
-
-
         if (habitsDescription.length === 0) {
             return (
                 <div>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</div>
@@ -137,7 +135,7 @@ export default function HabitsPage() {
 
         const body = {
             name: auxiliarHabit,
-            days: daysSelected
+            days: daysSelected.sort()
         }
 
         console.log(body);
@@ -233,7 +231,6 @@ export default function HabitsPage() {
                         <CancelButton
                             disabled={disableInputs}
                             data-test="habit-create-cancel-btn"
-                            // onClick={() => setPercentage(percentage + 1)}
                             onClick={() => cancelRequest()}>
                             Cancelar
                         </CancelButton>

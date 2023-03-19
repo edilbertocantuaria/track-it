@@ -12,6 +12,26 @@ export default function AppProvider({ children }) {
     const [disableInputs, setDisableInputs] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
+    const [listHabit, setListHabit] = useState([
+        {
+            "id": 3,
+            "name": "Acordar",
+            "done": true,
+            "currentSequence": 1,
+            "highestSequence": 1
+        },
+
+        {
+            "id": 4,
+            "name": "Banhar",
+            "done": false,
+            "currentSequence": 3,
+            "highestSequence": 3
+        },
+    ])
+
+
+
     return (
         <AppContext.Provider
             value={{
@@ -21,7 +41,8 @@ export default function AppProvider({ children }) {
                 percentage, setPercentage,
                 habitsDescription, setHabitsDescription,
                 disableInputs, setDisableInputs,
-                isLoading, setIsLoading
+                isLoading, setIsLoading,
+                listHabit, setListHabit
             }}>
             {children}
         </AppContext.Provider>
