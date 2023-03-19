@@ -43,7 +43,6 @@ export default function HabitsPage() {
     },
         [list])
 
-    //CRUD => CREAT, READ, UPDATE, DELETE
     function listingHabits() {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
         request.then(response => {
