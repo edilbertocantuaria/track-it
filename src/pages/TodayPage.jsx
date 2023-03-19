@@ -15,12 +15,17 @@ import useAppContext from '../hook/useAppContext'
 
 export default function TodayPage() {
 
-    const [todayDate, setTodayDate] = useState("")
+    const [todayDate, setTodayDate] = useState("");
+    const [percentageRate, setPercentageRate] = useState(0);
 
     const { percentage, setPercentage,
+        done, setDone,
         token,
         habitsDescription, setHabitsDescription,
         listHabit, setListHabit } = useAppContext();
+
+    const noHabitYet = "Nenhum hábito concluído ainda";
+    const progessToday = `${percentage}% dos hábitos concluídos`
 
     const config = {
         headers: {
@@ -55,10 +60,16 @@ export default function TodayPage() {
         [habitsDescription])
 
     useEffect(() => {
-        console.log(habitsDescription)
-        console.log(listHabit)
-        return
-    }, [])
+        let doneCount = 0;
+        listHabit.forEach(habit => {
+            if (habit.done) {
+                doneCount++;
+            }
+        });
+        let auxPercentage = (doneCount / listHabit.length) * 100;
+        setPercentageRate(auxPercentage);
+        setPercentage(auxPercentage);
+    }, [listHabit]);
 
     function habitsRender() {
         return (
@@ -83,23 +94,24 @@ export default function TodayPage() {
     }
 
     function habitDone(habit) {
-        console.log(habit);
-        console.log(habit.id);
-        const body ={}
+        // console.log(habit.id);
+        const body = {}
 
-        if (habit.done) {
-            axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, body, config)
+        if (!habit.done) {
+            //to check✅ the habit
+            axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, body, config)
                 .then(response =>
-                    console.log(response)
+                    console.log(response),
                 )
                 .catch(error =>
                     console.log(error)
                 )
 
         } else {
-            axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, body, config)
+            //to uncheck ☑️ the habit
+            axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, body, config)
                 .then(response =>
-                    console.log(response)
+                    console.log(response),
                 )
                 .catch(error =>
                     console.log(error)
@@ -115,7 +127,12 @@ export default function TodayPage() {
             <Main>
                 <div className="date">
                     <div data-test="today">{todayDate}</div>
-                    <div className="progress" data-test="today-counter">Nenhum hábito concluído ainda</div>
+                    <TodayCounter
+                        // className="progress"
+                        data-test="today-counter"
+                        colorFont={percentage > 0 ? "#8FC549" : "#BABABA"} >
+                        {percentage > 0 ? progessToday : noHabitYet}
+                    </TodayCounter >
                 </div>
 
                 {habitsDescription.length === 0 ? "" : habitsRender()}
@@ -163,13 +180,11 @@ text-align: justify;
         font-size: 23px;
         color: #126BA5;
 
-        .progress{
-            font-size: 18px;
-            color: #BABABA;
-            margin-top: 5px;
-
-            //color: #8FC549 when habits progress > 0%;
-        }
+        // .progress{
+        //     font-size: 18px;
+        //     color: ${props => props.colorFont};
+        //     margin-top: 5px;
+        // }
     }
 
     .habitList{
@@ -222,6 +237,9 @@ text-align: justify;
     }
 
 }
-
-
+`
+const TodayCounter = styled.div`
+font-size: 18px;
+color: ${props => props.colorFont};
+margin-top: 5px;
 `

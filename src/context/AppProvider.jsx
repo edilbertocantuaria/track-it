@@ -7,7 +7,7 @@ export default function AppProvider({ children }) {
     const [token, setToken] = useState("");
 
     const [percentage, setPercentage] =useState(0);
-    // const [done, setDone] = useState(0)
+    const [done, setDone] = useState(0)
     const [habitsDescription, setHabitsDescription] = useState([])
 
     const [disableInputs, setDisableInputs] = useState(false);
@@ -53,6 +53,7 @@ export default function AppProvider({ children }) {
                 username, setUsername,
                 token, setToken,
                 percentage, setPercentage,
+                done, setDone,
                 habitsDescription, setHabitsDescription,
                 disableInputs, setDisableInputs,
                 isLoading, setIsLoading,
