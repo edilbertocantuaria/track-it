@@ -15,7 +15,6 @@ import useAppContext from '../hook/useAppContext'
 
 export default function TodayPage() {
 
-    const [done, setDone] = useState(0)
     const [todayDate, setTodayDate] = useState("")
 
     const { percentage, setPercentage,
@@ -28,7 +27,7 @@ export default function TodayPage() {
             Authorization: `Bearer ${token}`
         }
     }
-    
+
     useEffect(() => {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
         request.then(response => {
@@ -40,23 +39,25 @@ export default function TodayPage() {
         let auxDate1 = aux_todayDate[0].toUpperCase();
         let auxDate2 = aux_todayDate.slice(1);
         setTodayDate(auxDate1 + auxDate2)
+        return
     },
         [habitsDescription])
 
-    // useEffect(() => {
-    //     const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
-    //     request.then(response => {
-    //         setListHabit(response.data);
-    //     });
-    //     request.catch(error => {
-    //         console.log(error);
-    //     })
-    // },
-    //     [habitsDescription])
+    useEffect(() => {
+        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config)
+        request.then(response => {
+            setListHabit(response.data);
+        });
+        request.catch(error => {
+            console.log(error);
+        })
+    },
+        [habitsDescription])
 
     useEffect(() => {
         console.log(habitsDescription)
         console.log(listHabit)
+        return
     }, [])
 
     function habitsRender() {
@@ -84,35 +85,26 @@ export default function TodayPage() {
     function habitDone(habit) {
         console.log(habit);
         console.log(habit.id);
+        const body ={}
 
         if (habit.done) {
-            // const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, config)
-            // request.then(response => 
-            //     console.log(response)
-            //     )
-            // request.catch(error => 
-            //     console.log(error)
-            //     )
-            habit.done = !habit.done;
-            setPercentage(percentage - 1)
+            axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, body, config)
+                .then(response =>
+                    console.log(response)
+                )
+                .catch(error =>
+                    console.log(error)
+                )
+
         } else {
-            // const request = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, config)
-            // request.then(response => 
-            //     console.log(response)
-            //     )
-            // request.catch(error => 
-            //     console.log(error)
-            //     )
-
-            habit.done = !habit.done;
-            setPercentage(percentage + 1)
-
+            axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, body, config)
+                .then(response =>
+                    console.log(response)
+                )
+                .catch(error =>
+                    console.log(error)
+                )
         }
-
-
-
-
-
     }
 
     return (
