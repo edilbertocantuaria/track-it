@@ -241,6 +241,7 @@ export default function HabitsPage() {
                         </CancelButton>
 
                         <SaveButton
+                            disabled={disableInputs}
                             type="submit"
                             data-test="habit-create-save-btn"
                             onClick={addHabitRequesting}
