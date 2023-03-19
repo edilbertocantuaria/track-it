@@ -76,6 +76,7 @@ export default function TodayPage() {
             <>
                 {listHabit.map((habit) =>
                     <div className="habitList"
+                        data-test="today-habit-container"
                         key={habit.id}>
                         <div className="habitDescription">
                             <div className="habitName" data-test="today-habit-name">{habit.name}</div>
