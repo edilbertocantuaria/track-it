@@ -80,8 +80,19 @@ export default function TodayPage() {
                         key={habit.id}>
                         <div className="habitDescription">
                             <div className="habitName" data-test="today-habit-name">{habit.name}</div>
-                            <div className="habitSequence" data-test="today-habit-sequence">Sequência atual: <span>{habit.currentSequence} dias</span></div>
-                            <div className="habitRecord" data-test="today-habit-record" >Seu recorde: <span>{habit.highestSequence} dias</span></div>
+
+                            <div className="habitSequence" data-test="today-habit-sequence">Sequência atual: 
+                            <HabitSequence_Record
+                            colorFont={habit.done ? "#8FC549" : "#666666" }
+                            > {habit.currentSequence} dias</HabitSequence_Record>
+                            </div>
+                    
+                            <div className="habitRecord" data-test="today-habit-record" >Seu recorde: 
+                            <HabitSequence_Record
+                            colorFont={colorRecord(habit)}
+                            > {habit.highestSequence} dias</HabitSequence_Record>
+                            </div>
+
                         </div>
 
                         <div className="todayHabitCheck" data-test="today-habit-check-btn">
@@ -117,6 +128,17 @@ export default function TodayPage() {
                 .catch(error =>
                     console.log(error)
                 )
+        }
+    }
+
+    function colorRecord(habit){
+        // console.log(habit.currentSequence);
+        // console.log(habit.highestSequence);
+
+        if ((habit.currentSequence>=habit.highestSequence) && (habit.currentSequence>0)){
+            return "#8FC549"
+        } else {
+            return "#666666"
         }
     }
 
@@ -180,12 +202,6 @@ text-align: justify;
 
         font-size: 23px;
         color: #126BA5;
-
-        // .progress{
-        //     font-size: 18px;
-        //     color: ${props => props.colorFont};
-        //     margin-top: 5px;
-        // }
     }
 
     .habitList{
@@ -215,13 +231,13 @@ text-align: justify;
                 color: #666666;
             }
 
-            .habitSequence span{
-                color: #8FC549;
-            }
+            // .habitSequence span{
+            //     color: #8FC549;
+            // }
 
-            .habitRecord span{
-                color: #8FC549;
-            }
+            // .habitRecord span{
+            //     color: #8FC549;
+            // }
 
             .habitName, .habitSequence{
                 margin-bottom: 8px;
@@ -243,4 +259,8 @@ const TodayCounter = styled.div`
 font-size: 18px;
 color: ${props => props.colorFont};
 margin-top: 5px;
+`
+
+const HabitSequence_Record = styled.span`
+color: ${props => props.colorFont}
 `
