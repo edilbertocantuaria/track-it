@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css';
 
 import Header from "../components/HeaderRender"
 import Menu from "../components//MenuRender"
@@ -18,8 +20,12 @@ export default function HistoryPage() {
                 <div className="history">
                     <div>Histórico</div>
                     <div className="historyParagraph">Em breve você poderá ver o histórico dos seus hábitos aqui!</div>
+                    
                 </div>
+                {/* <Calendar
+                 /> */}
             </Main>
+            
 
             <Menu />
 
