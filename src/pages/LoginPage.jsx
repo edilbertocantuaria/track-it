@@ -28,10 +28,6 @@ export default function LoginPage() {
 
     const navigate = useNavigate();
 
-
-
-
-
     function Login(event) {
         event.preventDefault();
 

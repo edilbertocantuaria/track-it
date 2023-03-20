@@ -25,10 +25,12 @@ export default function HabitsPage() {
     const [showCreateHabit, setShowCreateHabit] = useState("none");
     const [save, setSave] = useState("Salvar")
 
-    const [height, setHeight] = useState(100);
+    const [habitsCount, setHabitsCount] = useState(0);
 
-    const { token,
+    const { percentage, setPercentage,
+        token,
         habitsDescription, setHabitsDescription,
+        listHabit, setListHabit,
         disableInputs, setDisableInputs,
         isLoading, setIsLoading } = useAppContext()
 
@@ -37,16 +39,6 @@ export default function HabitsPage() {
             Authorization: `Bearer ${token}`
         }
     }
-
-    useEffect(() => {
-        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
-        request.then(response => {
-            setHabitsDescription(response.data);
-            setAuxiliarDays(response.data);
-        });
-
-    },
-        [list])
 
     useEffect(() => {
         const arrSelectedDays = auxiliarDays.map((habit) => habit.days);
@@ -63,6 +55,38 @@ export default function HabitsPage() {
 
     }
         , [auxiliarDays])
+
+
+    useEffect(() => {
+        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
+        request.then(response => {
+            setHabitsDescription(response.data);
+        });
+
+        return
+    },
+        [habitsDescription])
+
+    useEffect(() => {
+        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", config);
+        request.then(response => {
+            setListHabit(response.data);
+        });
+        request.catch(error => {
+            console.log(error);
+        });
+
+        let doneCount = 0;
+        listHabit.forEach(habit => {
+            if (habit.done) {
+                doneCount++;
+            }
+        });
+        let auxPercentage = Math.round((doneCount / listHabit.length) * 100);
+        setPercentage(auxPercentage);
+
+    }, [habitsDescription, listHabit]);
+
 
     function listingHabits() {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
@@ -175,6 +199,7 @@ export default function HabitsPage() {
             setHabit("");
             setDaysSelected([]);
             setList(...list, body)
+            setHabitsCount(prevCount => prevCount + 1);
 
         })
 
@@ -201,6 +226,7 @@ export default function HabitsPage() {
             request.then(response => {
                 console.log(response)
                 setList(...list, deleteHabit)
+                setHabitsCount(prevCount => prevCount - 1)
             });
         } else {
             return
