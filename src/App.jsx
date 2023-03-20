@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
 
 import AppProvider from './context/AppProvider'
 import LoginPage from "./pages/LoginPage"

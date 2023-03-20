@@ -41,12 +41,6 @@ export default function LoginPage() {
             password: password
         }        
 
-        // const userSerializing = JSON.stringify(user);
-        // localStorage.setItem("Dados", userSerializing);
-        // const localStorageUser = localStorage.getItem("Dados")
-        // const userDeserializing = JSON.parse(localStorageUser)
-
-
         const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", user)
 
         request.then(response => {
@@ -55,6 +49,12 @@ export default function LoginPage() {
             setToken(response.data.token);
             setIsLoading(false);
             setDisableInputs(false);
+
+            localStorage.setItem("user", JSON.stringify({
+                token: response.data.token, 
+                image: response.data.image,
+                name: response.data.name}));
+                
             navigate("/hoje");
         })
 

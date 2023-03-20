@@ -245,7 +245,8 @@ export default function HabitsPage() {
 
 
                 <AddHabitForm
-                    data-test="habit-create-container"
+                    // data-test="habit-create-container"
+                    data-test="habit-container"
                     visible={showCreateHabit}>
 
                     <input
