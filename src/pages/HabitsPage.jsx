@@ -25,8 +25,6 @@ export default function HabitsPage() {
     const [showCreateHabit, setShowCreateHabit] = useState("none");
     const [save, setSave] = useState("Salvar")
 
-    const [habitsCount, setHabitsCount] = useState(0);
-
     const { percentage, setPercentage,
         token,
         habitsDescription, setHabitsDescription,
@@ -199,7 +197,6 @@ export default function HabitsPage() {
             setHabit("");
             setDaysSelected([]);
             setList(...list, body)
-            setHabitsCount(prevCount => prevCount + 1);
 
         })
 
@@ -225,8 +222,7 @@ export default function HabitsPage() {
 
             request.then(response => {
                 console.log(response)
-                setList(...list, deleteHabit)
-                setHabitsCount(prevCount => prevCount - 1)
+                setList(...list, deleteHabit);
             });
         } else {
             return
