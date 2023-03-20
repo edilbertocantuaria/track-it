@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
 
 import axios from "axios"
 import dayjs from 'dayjs';
@@ -25,7 +24,7 @@ export default function TodayPage() {
         listHabit, setListHabit } = useAppContext();
 
     const noHabitYet = "Nenhum hábito concluído ainda";
-    const progessToday = `${percentage}% dos hábitos concluídos`
+    const progressToday = `${percentage}% dos hábitos concluídos`
 
     const config = {
         headers: {
@@ -66,7 +65,7 @@ export default function TodayPage() {
                 doneCount++;
             }
         });
-        let auxPercentage = (doneCount / listHabit.length) * 100;
+        let auxPercentage = Math.round((doneCount / listHabit.length) * 100);
         setPercentageRate(auxPercentage);
         setPercentage(auxPercentage);
     }, [listHabit]);
@@ -81,16 +80,16 @@ export default function TodayPage() {
                         <div className="habitDescription">
                             <div className="habitName" data-test="today-habit-name">{habit.name}</div>
 
-                            <div className="habitSequence" data-test="today-habit-sequence">Sequência atual: 
-                            <HabitSequence_Record
-                            colorFont={habit.done ? "#8FC549" : "#666666" }
-                            > {habit.currentSequence} dias</HabitSequence_Record>
+                            <div className="habitSequence" data-test="today-habit-sequence">Sequência atual:
+                                <HabitSequence_Record
+                                    colorFont={habit.done ? "#8FC549" : "#666666"}
+                                > {habit.currentSequence} dias</HabitSequence_Record>
                             </div>
-                    
-                            <div className="habitRecord" data-test="today-habit-record" >Seu recorde: 
-                            <HabitSequence_Record
-                            colorFont={colorRecord(habit)}
-                            > {habit.highestSequence} dias</HabitSequence_Record>
+
+                            <div className="habitRecord" data-test="today-habit-record" >Seu recorde:
+                                <HabitSequence_Record
+                                    colorFont={colorRecord(habit)}
+                                > {habit.highestSequence} dias</HabitSequence_Record>
                             </div>
 
                         </div>
@@ -131,11 +130,11 @@ export default function TodayPage() {
         }
     }
 
-    function colorRecord(habit){
+    function colorRecord(habit) {
         // console.log(habit.currentSequence);
         // console.log(habit.highestSequence);
 
-        if ((habit.currentSequence>=habit.highestSequence) && (habit.currentSequence>0)){
+        if ((habit.currentSequence >= habit.highestSequence) && (habit.currentSequence > 0)) {
             return "#8FC549"
         } else {
             return "#666666"
@@ -151,10 +150,9 @@ export default function TodayPage() {
                 <div className="date">
                     <div data-test="today">{todayDate}</div>
                     <TodayCounter
-                        // className="progress"
                         data-test="today-counter"
                         colorFont={percentage > 0 ? "#8FC549" : "#BABABA"} >
-                        {percentage > 0 ? progessToday : noHabitYet}
+                        {percentage > 0 ? progressToday : noHabitYet}
                     </TodayCounter >
                 </div>
 
@@ -175,7 +173,7 @@ flex-direction: column;
 align-items: center;
 
 width: 100vw;
-height: 100vh;
+min-height: 180vh;
 background-color: #E5E5E5;
 
 font-family: 'Lexend Deca';
@@ -230,14 +228,6 @@ text-align: justify;
                 font-size: 20px;
                 color: #666666;
             }
-
-            // .habitSequence span{
-            //     color: #8FC549;
-            // }
-
-            // .habitRecord span{
-            //     color: #8FC549;
-            // }
 
             .habitName, .habitSequence{
                 margin-bottom: 8px;

@@ -19,12 +19,15 @@ export default function HabitsPage() {
 
     const [list, setList] = useState([]);
     const [daysSelected, setDaysSelected] = useState([]);
+    const [selectedDays, setSelectedDays] = useState([]);
+    const [auxiliarDays, setAuxiliarDays] = useState([]);
 
     const [showCreateHabit, setShowCreateHabit] = useState("none");
     const [save, setSave] = useState("Salvar")
 
-    const { percentage, setPercentage,
-        token,
+    const [height, setHeight] = useState(100);
+
+    const { token,
         habitsDescription, setHabitsDescription,
         disableInputs, setDisableInputs,
         isLoading, setIsLoading } = useAppContext()
@@ -39,10 +42,27 @@ export default function HabitsPage() {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
         request.then(response => {
             setHabitsDescription(response.data);
+            setAuxiliarDays(response.data);
         });
 
     },
         [list])
+
+    useEffect(() => {
+        const arrSelectedDays = auxiliarDays.map((habit) => habit.days);
+        // console.log(arrSelectedDays);
+        setSelectedDays(arrSelectedDays);
+
+        for (let i = 0; i < 1; i++) {
+            console.log(i)
+            console.log(selectedDays)
+        }
+        selectedDays.map((arrDays) =>
+            console.log(arrDays)
+        )
+
+    }
+        , [auxiliarDays])
 
     function listingHabits() {
         const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
@@ -78,17 +98,18 @@ export default function HabitsPage() {
                                 <div className="habitDescription" data-test="habit-name">{habit.name}</div>
                                 <div className="weekdays">
                                     {weekdays.map((day, i) =>
-                                        <DaysButton
+                                        <DaysButtonHabit
                                             disabled={disableSomeInputs}
                                             data-test="habit-day"
                                             className="day"
                                             key={i}
-                                            onClick={() => selectingDay(i)}
-                                            colorFont={daysSelected.includes(i) ? "#FFFFFF" : "#DBDBDB"}
-                                            backgroundColor={daysSelected.includes(i) ? "#CFCFCF" : "#FFFFFF"}
+                                            // colorFont={habit.days.includes(i) ?  ("#FFFFFF", console.log(habit.days), console.log(i), console.log("true")): ("#DBDBDB", console.log(habit.days), console.log(i), console.log("false"))}
+                                            colorFont={habit.days.includes(i) ?  "#FFFFFF" : "#DBDBDB"}
+                                            backgroundColor={habit.days.includes(i) ? "#CFCFCF" : "#FFFFFF"}
                                         >
                                             {day}
-                                        </DaysButton>)}
+                                        </DaysButtonHabit>
+                                    )}
                                 </div>
                             </div>
                         </HabitList>)
@@ -183,6 +204,13 @@ export default function HabitsPage() {
         }
     }
 
+    function coloringDaySelected(){}
+
+
+    function coloringDayNOTSelected(){
+
+    }
+
     return (
         <MainDiv>
             <Header />
@@ -269,10 +297,11 @@ const MainDiv = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
+position: relative;
 
 width: 100vw;
-height: 100vh; //tenho que alterar isso!
-background-color: #E5E5E5;
+height:  250vh; //tenho que alterar isso!
+background: #E5E5E5;
 
 font-family: 'Lexend Deca';
 font-style: normal;
@@ -324,6 +353,7 @@ text-align: justify;
     width: 90%;
     display: flex;
     justify-content: space-between;
+    color: ${props => props.colorFont}
     
         
     } 
@@ -408,6 +438,17 @@ background-color: ${props => props.backgroundColor};
 border: 1px solid #D5D5D5;
 border-radius: 5px;
 // color: #DBDBDB;
+color: ${props => props.colorFont}
+`
+
+const DaysButtonHabit = styled.button`
+// width: 30px;
+// height: 30px;
+// background-color: #FFFFFF;
+background-color: ${props => props.backgroundColor};
+// border: 1px solid #D5D5D5;
+// border-radius: 5px;
+// // color: #DBDBDB;
 color: ${props => props.colorFont}
 `
 const CancelButton = styled.button`

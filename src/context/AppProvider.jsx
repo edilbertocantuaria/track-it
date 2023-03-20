@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { AppContext } from './AppContext'
 
 export default function AppProvider({ children }) {
@@ -13,38 +13,7 @@ export default function AppProvider({ children }) {
     const [disableInputs, setDisableInputs] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    // const [listHabit, setListHabit] = useState([
-    //     {
-    //         "id": 3,
-    //         "name": "Acordar",
-    //         "done": true,
-    //         "currentSequence": 1,
-    //         "highestSequence": 1
-    //     },
-
-    //     {
-    //         "id": 4,
-    //         "name": "Banhar",
-    //         "done": false,
-    //         "currentSequence": 3,
-    //         "highestSequence": 3
-    //     },
-    // ])
-
     const [listHabit, setListHabit] = useState([]) 
-
-//     useEffect( () => {
-//         //Calcular a porcentagem 
-//         listHabit.map((habit) => {
-//         //    console.log(habit.done)
-//            if (habit.done) {
-//                setDone(done + 1)
-//            }
-//        }
-//        )
-//        const auxPercentage = (done / listHabit.length) * 100;
-//        setPercentage(auxPercentage);
-//    }, [done, listHabit])
 
     return (
         <AppContext.Provider
