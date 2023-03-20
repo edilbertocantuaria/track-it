@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css';
+// import 'react-calendar/dist/Calendar.css';
 
 import Header from "../components/HeaderRender"
 import Menu from "../components//MenuRender"

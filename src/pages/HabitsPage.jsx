@@ -229,13 +229,6 @@ export default function HabitsPage() {
         }
     }
 
-    function coloringDaySelected() { }
-
-
-    function coloringDayNOTSelected() {
-
-    }
-
     return (
         <MainDiv>
             <Header />
