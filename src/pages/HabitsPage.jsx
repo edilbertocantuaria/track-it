@@ -98,17 +98,20 @@ export default function HabitsPage() {
                                 <div className="habitDescription" data-test="habit-name">{habit.name}</div>
                                 <div className="weekdays">
                                     {weekdays.map((day, i) =>
-                                        <DaysButtonHabit
+                                        <DaysButton
                                             disabled={disableSomeInputs}
                                             data-test="habit-day"
                                             className="day"
                                             key={i}
-                                            // colorFont={habit.days.includes(i) ?  ("#FFFFFF", console.log(habit.days), console.log(i), console.log("true")): ("#DBDBDB", console.log(habit.days), console.log(i), console.log("false"))}
-                                            colorFont={habit.days.includes(i) ?  "#FFFFFF" : "#DBDBDB"}
-                                            backgroundColor={habit.days.includes(i) ? "#CFCFCF" : "#FFFFFF"}
+                                            style={
+                                                {
+                                                    color: habit.days.includes(i) ? "#FFFFFF" : "#DBDBDB",
+                                                    backgroundColor: habit.days.includes(i) ? "#CFCFCF" : "#FFFFFF"
+                                                }
+                                            }
                                         >
                                             {day}
-                                        </DaysButtonHabit>
+                                        </DaysButton>
                                     )}
                                 </div>
                             </div>
@@ -204,10 +207,10 @@ export default function HabitsPage() {
         }
     }
 
-    function coloringDaySelected(){}
+    function coloringDaySelected() { }
 
 
-    function coloringDayNOTSelected(){
+    function coloringDayNOTSelected() {
 
     }
 
@@ -438,17 +441,6 @@ background-color: ${props => props.backgroundColor};
 border: 1px solid #D5D5D5;
 border-radius: 5px;
 // color: #DBDBDB;
-color: ${props => props.colorFont}
-`
-
-const DaysButtonHabit = styled.button`
-// width: 30px;
-// height: 30px;
-// background-color: #FFFFFF;
-background-color: ${props => props.backgroundColor};
-// border: 1px solid #D5D5D5;
-// border-radius: 5px;
-// // color: #DBDBDB;
 color: ${props => props.colorFont}
 `
 const CancelButton = styled.button`
