@@ -53,13 +53,13 @@ export default function HabitsPage() {
         // console.log(arrSelectedDays);
         setSelectedDays(arrSelectedDays);
 
-        for (let i = 0; i < 1; i++) {
-            console.log(i)
-            console.log(selectedDays)
-        }
-        selectedDays.map((arrDays) =>
-            console.log(arrDays)
-        )
+        // for (let i = 0; i < 1; i++) {
+        //     console.log(i)
+        //     console.log(selectedDays)
+        // }
+        // selectedDays.map((arrDays) =>
+        //     console.log(arrDays)
+        // )
 
     }
         , [auxiliarDays])
