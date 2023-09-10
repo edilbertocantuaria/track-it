@@ -54,7 +54,7 @@ table {
 	&:link, &:visited {
 		color: none;
 		text-decoration: none;
-		cursor: none;
+		cursor: display;
 	}
 `
 
